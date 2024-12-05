@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "./supabaseClient";
 
 interface Props {
   isOpenPopup: boolean;
@@ -15,10 +15,6 @@ interface Props {
 }
 
 function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
-  const supabase = createClient(
-    "https://vdxfwgidxnpsnvczwizn.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkeGZ3Z2lkeG5wc252Y3p3aXpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzMzE3OTcsImV4cCI6MjA0ODkwNzc5N30.BgQ6_BEa5M-wUwXxKFoNEFPFnJ1CEzPpx86mmYpWxr8"
-  );
   const [isRegister, setIsRegister] = useState(true);
   const validationSchema = yup.object().shape({
     email: yup
@@ -55,25 +51,16 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
       email,
       password,
     });
-
     if (authError) {
       console.error("Ошибка ", authError.message); /////
       return;
-    }
-
-    const { error: dbError } = await supabase
-      .from("users")
-      .insert([{ email, password }]);
-
-    if (dbError) {
-      console.error("Ошибка ", dbError.message);
     } else {
       alert("Регмстрация успешна");
     }
-  }
+  };
 
-  const handleLogin = async (data: { email: string; password: string }) => {
-    const { email, password } = data;
+  const handleLogin = async (dataAuth: { email: string; password: string }) => {
+    const { email, password } = dataAuth;
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -85,13 +72,13 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
     } else {
       alert("Авторизация успешна");
     }
-  }
+  };
 
-  const onSubmit = async (data: { email: string; password: string }) => {
+  const onSubmit = async (dataAuth: { email: string; password: string }) => {
     if (isRegister) {
-      await handleRegister(data);
+      await handleRegister(dataAuth);
     } else {
-      await handleLogin(data);
+      await handleLogin(dataAuth);
     }
   };
   const style = {
