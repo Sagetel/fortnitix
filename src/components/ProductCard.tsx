@@ -17,7 +17,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, pric
   };
 
   return (
-    <Card>
+    <Card
+      sx={{
+        transition: 'all .3s ease',
+        ':hover': {
+          boxShadow: 5,
+          scale: 1.01,
+        },
+      }}
+    >
       <Box sx={{ position: 'relative' }}>
         <Box
           sx={{
