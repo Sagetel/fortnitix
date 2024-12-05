@@ -1,28 +1,19 @@
-import React, { useState } from 'react';
-import Header from './components/Header';
-import CardsWrapper from './components/CardsWrapper';
-import Search from './components/Search';
-
-import './App.css';
-
-import { Box } from '@mui/material';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import 'normalize.css';
 
 function App() {
-  const [query, setQuery] = useState('');
-
-  const handleSearch = (searchQuery: string) => {
-    setQuery(searchQuery);
-  };
-
   return (
-    <div>
-      <Header />
-      <Box sx={{ p: 10 }}>
-        <Search onSearch={handleSearch} />
-        <CardsWrapper query={query} />
-      </Box>
-    </div>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
