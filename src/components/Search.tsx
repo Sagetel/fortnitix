@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box, TextField, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
-const Search = () => {
+interface SearchProps {
+  onSearch: (query: string) => void;
+}
+
+const Search: React.FC<SearchProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedQuery(query);
+      onSearch(query);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, onSearch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
-
-  useEffect(() => {
-    if (debouncedQuery) {
-      console.log('Search Query:', debouncedQuery);
-    }
-  }, [debouncedQuery]);
 
   return (
     <Box>
@@ -32,6 +30,15 @@ const Search = () => {
         value={query}
         onChange={handleChange}
         sx={{ mb: 2 }}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          },
+        }}
       />
     </Box>
   );
