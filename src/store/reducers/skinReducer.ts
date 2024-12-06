@@ -1,6 +1,3 @@
-// const FETCH_SKINS = 'FETCH_SKINS';
-// const FETCH_SKINS_SUCCESS = 'FETCH_SKINS_SUCCESS';
-// const FETCH_SKINS_ERROR = 'FETCH_SKINS_ERROR';
 
 export enum ActionTypes {
     FETCH_SKINS = 'FETCH_SKINS',

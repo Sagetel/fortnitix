@@ -1,5 +1,5 @@
-import { FavoritesActionTypes, IFavoritesState } from "../../types"
-import { TFavoritesAction } from "../../types"
+import { FavoritesActionTypes, IFavoritesState } from "../../utils/types"
+import { TFavoritesAction } from "../../utils/types"
 
 const initialState: IFavoritesState  = {
     favorites: [],

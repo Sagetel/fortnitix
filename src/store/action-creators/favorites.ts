@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { FavoritesActionTypes, IFavoritesAction } from "../../types"
+import { FavoritesActionTypes, IFavoritesAction } from "../../utils/types"
 import { supabase } from "../../components/supabaseClient"
 
 

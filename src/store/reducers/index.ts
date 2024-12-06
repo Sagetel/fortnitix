@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { skinsReducer } from './skinReducer'
 import { favoritesReducer } from "./favoritesReducer";
+import { userReducer } from "./userReducer";
 
 export const rootReducer = combineReducers({
-   skins:  skinsReducer,
-   favorites: favoritesReducer
+   favorites: favoritesReducer,
+   user: userReducer
 });

@@ -7,7 +7,9 @@ import Typography from "@mui/material/Typography";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { supabase } from "./supabaseClient";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { supabase } from "../components/supabaseClient";
+import { loginError, login } from "../store/action-creators/user";
 
 interface Props {
   isOpenPopup: boolean;
@@ -15,7 +17,10 @@ interface Props {
 }
 
 function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
+  const dispatch = useAppDispatch();
   const [isRegister, setIsRegister] = useState(true);
+  const isReg = useAppSelector((state) => state.user.userIsLogedIn);
+  console.log(isReg);
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -40,11 +45,6 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
     },
   });
 
-  const handleToggle = () => {
-    setIsRegister(!isRegister);
-    reset();
-  };
-
   const handleRegister = async (data: { email: string; password: string }) => {
     const { email, password } = data;
     const { error: authError } = await supabase.auth.signUp({
@@ -52,7 +52,7 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
       password,
     });
     if (authError) {
-      console.error("Ошибка ", authError.message); /////
+      console.error("Ошибка ", authError);
       return;
     } else {
       alert("Регистрация успешна");
@@ -69,10 +69,18 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
 
     if (error) {
       console.error("Ошибка ", error.message);
+      dispatch(loginError(error.message));
     } else {
       alert("Авторизация успешна");
+      dispatch(login());
     }
   };
+
+  const handleToggle = () => {
+    setIsRegister(!isRegister);
+    reset();
+  };
+
 
   const onSubmit = async (dataAuth: { email: string; password: string }) => {
     if (isRegister) {
@@ -81,13 +89,14 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
       await handleLogin(dataAuth);
     }
   };
+
   const style = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     gap: "16px",
     padding: "24px",
-  };
+  }; 
 
   return (
     <MyModal isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup}>
