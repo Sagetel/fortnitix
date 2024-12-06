@@ -55,7 +55,7 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
       console.error("Ошибка ", authError.message); /////
       return;
     } else {
-      alert("Регмстрация успешна");
+      alert("Регистрация успешна");
     }
   };
 

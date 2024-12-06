@@ -16,11 +16,11 @@ function App() {
 
   return (
     <div>
-      <Header />
-      <Box sx={{ p: 10 }}>
-        <Search onSearch={handleSearch} />
-        <CardsWrapper query={query} />
-      </Box>
+        <Header />
+        <Box sx={{ p: 10 }}>
+          <Search onSearch={handleSearch} />
+          <CardsWrapper query={query} />
+        </Box>
     </div>
   );
 }
