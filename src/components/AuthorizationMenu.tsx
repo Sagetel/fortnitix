@@ -7,7 +7,10 @@ import Typography from "@mui/material/Typography";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { supabase } from "./supabaseClient";
+import { useAppDispatch } from "../store/hooks";
+import { loginError, login } from "../store/action-creators/user";
+import { handleLogin, handleRegister } from "../utils/api";
+
 
 interface Props {
   isOpenPopup: boolean;
@@ -15,6 +18,7 @@ interface Props {
 }
 
 function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
+  const dispatch = useAppDispatch();
   const [isRegister, setIsRegister] = useState(true);
   const validationSchema = yup.object().shape({
     email: yup
@@ -45,49 +49,31 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
     reset();
   };
 
-  const handleRegister = async (data: { email: string; password: string }) => {
-    const { email, password } = data;
-    const { error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-    if (authError) {
-      console.error("Ошибка ", authError.message); /////
-      return;
-    } else {
-      alert("Регмстрация успешна");
-    }
-  };
-
-  const handleLogin = async (dataAuth: { email: string; password: string }) => {
-    const { email, password } = dataAuth;
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      console.error("Ошибка ", error.message);
-    } else {
-      alert("Авторизация успешна");
-    }
-  };
 
   const onSubmit = async (dataAuth: { email: string; password: string }) => {
-    if (isRegister) {
-      await handleRegister(dataAuth);
-    } else {
-      await handleLogin(dataAuth);
+
+    try { 
+      if (isRegister) {
+        await handleRegister(dataAuth);
+        alert("Регистрация прошла успешно");
+      } else {
+        await handleLogin(dataAuth);
+        alert("Авторизация прошла успешно");
+        dispatch(login());
+      }
+    } catch (error: any) {
+      console.error("Ошибка: ", error.message);
+      dispatch(loginError(error.message));
     }
   };
+
   const style = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     gap: "16px",
     padding: "24px",
-  };
+  }; 
 
   return (
     <MyModal isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup}>
