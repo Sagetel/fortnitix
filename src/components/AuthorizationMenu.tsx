@@ -7,9 +7,10 @@ import Typography from "@mui/material/Typography";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { supabase } from "../components/supabaseClient";
+import { useAppDispatch } from "../store/hooks";
 import { loginError, login } from "../store/action-creators/user";
+import { handleLogin, handleRegister } from "../utils/api";
+
 
 interface Props {
   isOpenPopup: boolean;
@@ -19,8 +20,6 @@ interface Props {
 function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
   const dispatch = useAppDispatch();
   const [isRegister, setIsRegister] = useState(true);
-  const isReg = useAppSelector((state) => state.user.userIsLogedIn);
-  console.log(isReg);
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -45,37 +44,6 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
     },
   });
 
-  const handleRegister = async (data: { email: string; password: string }) => {
-    const { email, password } = data;
-    const { error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-    if (authError) {
-      console.error("Ошибка ", authError);
-      return;
-    } else {
-      alert("Регистрация успешна");
-    }
-  };
-
-  const handleLogin = async (dataAuth: { email: string; password: string }) => {
-    const { email, password } = dataAuth;
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      console.error("Ошибка ", error.message);
-      dispatch(loginError(error.message));
-    } else {
-      alert("Авторизация успешна");
-      dispatch(login());
-    }
-  };
-
   const handleToggle = () => {
     setIsRegister(!isRegister);
     reset();
@@ -83,10 +51,19 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
 
 
   const onSubmit = async (dataAuth: { email: string; password: string }) => {
-    if (isRegister) {
-      await handleRegister(dataAuth);
-    } else {
-      await handleLogin(dataAuth);
+
+    try { 
+      if (isRegister) {
+        await handleRegister(dataAuth);
+        alert("Регистрация прошла успешно");
+      } else {
+        await handleLogin(dataAuth);
+        alert("Авторизация прошла успешно");
+        dispatch(login());
+      }
+    } catch (error: any) {
+      console.error("Ошибка: ", error.message);
+      dispatch(loginError(error.message));
     }
   };
 
