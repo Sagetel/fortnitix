@@ -4,6 +4,7 @@ export const handleRegister = async (data: { email: string; password: string }) 
     try {
       const { email, password } = data;
       await supabase.auth.signUp({ email, password });
+      alert("Регистрация прошла успешно");
       return true; 
     } catch (error) {
       console.error("Ошибка регистрации: ", error);
@@ -15,9 +16,11 @@ export const handleRegister = async (data: { email: string; password: string }) 
     try {
       const { email, password } = dataAuth;
       await supabase.auth.signInWithPassword({ email, password });
+      alert("Авторизация прошла успешно");
       return true; 
     } catch (error) {
       console.error("Ошибка авторизации: ", error);
       throw error; 
     }
   };
+  
