@@ -7,11 +7,9 @@ import { useSelector } from 'react-redux';
 interface ProductCardProps {
   image: string;
   name: string;
-  price: string;
-  background: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, price }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ image, name }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -47,8 +45,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, pric
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `url(${background})`,
-            backgroundSize: 'cover',
             zIndex: 1,
           }}
         />
@@ -67,6 +63,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, pric
           sx={{
             display: userIsLogedIn ? 'block' : 'none',
             position: 'absolute',
+            lineHeight: 1,
+            fontSize: '1rem',
             top: 8,
             right: 8,
             zIndex: 3,
@@ -82,9 +80,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, pric
       <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
         <Typography variant="body1" component="div" noWrap>
           {name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {price}
         </Typography>
       </CardContent>
     </Card>
