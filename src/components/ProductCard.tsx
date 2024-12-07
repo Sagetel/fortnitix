@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Card, CardMedia, CardContent, Typography, IconButton, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
 
 interface ProductCardProps {
   image: string;
@@ -11,6 +13,9 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, price }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const userIsLogedIn = useSelector((state: RootState) => state.user.userIsLogedIn);
 
   const handleClick = () => {
     setIsFavorite(prev => !prev);
@@ -20,11 +25,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, pric
     <Card
       sx={{
         transition: 'all .3s ease',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
         ':hover': {
           boxShadow: 5,
-          scale: 1.01,
+          transform: 'scale(1.01)',
+          '& .icon-button': {
+            opacity: 1,
+          },
         },
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Box sx={{ position: 'relative' }}>
         <Box
@@ -48,19 +61,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, background, name, pric
             zIndex: 2,
           }}
         />
-      </Box>
-      <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <Typography variant="body1" component="div">
-            {name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {price}
-          </Typography>
-        </div>
-        <IconButton aria-label="add to favorites" onClick={handleClick}>
-          <FavoriteIcon sx={{ color: isFavorite ? 'red' : 'gray' }} />
+        <IconButton 
+          aria-label="add to favorites" 
+          onClick={handleClick}
+          sx={{
+            display: userIsLogedIn ? 'block' : 'none',
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            zIndex: 3,
+            color: isFavorite ? 'red' : 'gray',
+            opacity: isFavorite || isHovered ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
+          className="icon-button"
+        >
+          <FavoriteIcon />
         </IconButton>
+      </Box>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+        <Typography variant="body1" component="div" noWrap>
+          {name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {price}
+        </Typography>
       </CardContent>
     </Card>
   );
