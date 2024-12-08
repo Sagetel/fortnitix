@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   };
   return (
     <div>
-      <Box sx={{ p: 10 }}>
+      <Box>
         <Search onSearch={handleSearch} />
         <CardsWrapper query={query} />
       </Box>

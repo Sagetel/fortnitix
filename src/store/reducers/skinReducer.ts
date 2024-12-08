@@ -1,3 +1,7 @@
+export interface Skin {
+    name: string;
+    image: string;
+}
 
 export enum ActionTypes {
     FETCH_SKINS = 'FETCH_SKINS',
@@ -6,7 +10,7 @@ export enum ActionTypes {
 }
 
 interface SkinsState {
-    skins: [];
+    skins: Skin[];
     loading: boolean;
     error: null | string;
 }
@@ -17,14 +21,13 @@ const initialState: SkinsState = {
     error: null
 }
 
- 
 interface FetchSkinsAction {
     type: ActionTypes.FETCH_SKINS;
 }
 
 interface FetchSkinsSuccessAction {
     type: ActionTypes.FETCH_SKINS_SUCCESS;
-    payload: [];
+    payload: Skin[];
 }
 
 interface FetchSkinsErrorAction {
@@ -35,27 +38,30 @@ interface FetchSkinsErrorAction {
 export type SkinAction = FetchSkinsAction | FetchSkinsSuccessAction | FetchSkinsErrorAction;
 
 
-export const skinsReducer = (state = initialState, action: SkinAction):SkinsState => {
+export const skinsReducer = (state = initialState, action: SkinAction): SkinsState => {
     switch (action.type) {
-        case ActionTypes.FETCH_SKINS :
+        case ActionTypes.FETCH_SKINS:
             return {
+                ...state,
                 skins: [],
                 loading: true,
                 error: null
-            }
-        case ActionTypes.FETCH_SKINS_SUCCESS :
+            };
+        case ActionTypes.FETCH_SKINS_SUCCESS:
             return {
+                ...state,
                 skins: action.payload,
-                loading: true,
+                loading: false,
                 error: null
-            }
-        case ActionTypes.FETCH_SKINS_ERROR :
+            };
+        case ActionTypes.FETCH_SKINS_ERROR:
             return {
+                ...state,
                 skins: [],
                 loading: false,
                 error: action.payload
-            }
-        default: 
+            };
+        default:
             return state;
     }
-}
+};
