@@ -14,8 +14,13 @@ export const handleRegister = async (data: { email: string; password: string }) 
   export const handleLogin = async (dataAuth: { email: string; password: string }) => {
     try {
       const { email, password } = dataAuth;
-      await supabase.auth.signInWithPassword({ email, password });
-      return true; 
+      const { data } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (!data.user || !data.user.email) {
+        throw new Error("Email пользователя не найден");
+      }
+      
+      return data.user.email; 
     } catch (error) {
       console.error("Ошибка авторизации: ", error);
       throw error; 

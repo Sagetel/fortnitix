@@ -41,6 +41,7 @@ export type TFavoritesAction = ICreateFavoriteAction | ICreateFavoriteErrorActio
 
 
 export interface userState {
+    userEmail: string;
     userIsLogedIn: boolean;
     error: null | string;
 }
@@ -60,7 +61,7 @@ export interface IUserAction {
 
 interface IUserLoginAction {
     type: UserActionTypes.LOGIN,
-    payload: any
+    payload: string 
 }
 
 interface IUserLoginErrorAction {

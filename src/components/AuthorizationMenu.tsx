@@ -57,9 +57,9 @@ function AuthorizationMenu({ isOpenPopup, setIsOpenPopup }: Props) {
         await handleRegister(dataAuth);
         alert("Регистрация прошла успешно");
       } else {
-        await handleLogin(dataAuth);
+        const userLogin = await handleLogin(dataAuth);
         alert("Авторизация прошла успешно");
-        dispatch(login());
+        dispatch(login(userLogin));
       }
     } catch (error: any) {
       console.error("Ошибка: ", error.message);
