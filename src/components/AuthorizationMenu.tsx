@@ -53,8 +53,9 @@ function AuthorizationMenu({ isRegisterForm = false }: Props) {
       if (isRegister) {
         await handleRegister(dataAuth);
       } else {
-        await handleLogin(dataAuth);
-        dispatch(login());
+        const userLogin = await handleLogin(dataAuth);
+        alert("Авторизация прошла успешно");
+        dispatch(login(userLogin));
       }
     } catch (error: any) {
       console.error("Ошибка: ", error.message);
