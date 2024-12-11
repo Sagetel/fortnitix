@@ -3,7 +3,9 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
 import "normalize.css";
+import './App.css'
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/singin" element={<Signin />} />
           <Route path="/singup" element={<Signup />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Layout>
     </BrowserRouter>

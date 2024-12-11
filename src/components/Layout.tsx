@@ -9,7 +9,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
       <Header />
-      <main style={{ padding: "20px" }}>{children}</main>
+      <main style={{ padding: "20px", height: '100%' }}>{children}</main>
     </div>
   );
 };

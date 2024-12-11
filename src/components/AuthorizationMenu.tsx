@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import MyModal from "./MyModal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -10,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../store/hooks";
 import { loginError, login } from "../store/action-creators/user";
 import { handleLogin, handleRegister } from "../utils/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   isRegisterForm?: boolean;
@@ -18,7 +16,7 @@ interface Props {
 
 function AuthorizationMenu({ isRegisterForm = false }: Props) {
   const dispatch = useAppDispatch();
-  const [isRegister, setIsRegister] = useState(isRegisterForm);
+  const navigate = useNavigate();
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -33,7 +31,6 @@ function AuthorizationMenu({ isRegisterForm = false }: Props) {
   const {
     handleSubmit,
     control,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -43,19 +40,14 @@ function AuthorizationMenu({ isRegisterForm = false }: Props) {
     },
   });
 
-  const handleToggle = () => {
-    setIsRegister(!isRegister);
-    reset();
-  };
-
   const onSubmit = async (dataAuth: { email: string; password: string }) => {
     try {
-      if (isRegister) {
+      if (isRegisterForm) {
         await handleRegister(dataAuth);
       } else {
         const userLogin = await handleLogin(dataAuth);
-        alert("Авторизация прошла успешно");
         dispatch(login(userLogin));
+        navigate("/");
       }
     } catch (error: any) {
       console.error("Ошибка: ", error.message);
@@ -74,7 +66,7 @@ function AuthorizationMenu({ isRegisterForm = false }: Props) {
   return (
     <Box sx={style}>
       <Typography variant="h5" component="h2">
-        {isRegister ? "Регистрация" : "Авторизация"}
+        {isRegisterForm ? "Регистрация" : "Авторизация"}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <Controller
@@ -115,11 +107,11 @@ function AuthorizationMenu({ isRegisterForm = false }: Props) {
           fullWidth
           sx={{ marginTop: "16px" }}
         >
-          {isRegister ? "Зарегистрироваться" : "Войти"}
+          {isRegisterForm ? "Зарегистрироваться" : "Войти"}
         </Button>
       </form>
       <Button sx={{ textTransform: "none", marginTop: "8px" }}>
-        {isRegister ? (
+        {isRegisterForm ? (
           <Link
             to="/singin"
             style={{ textDecoration: "none", color: "inherit" }}
