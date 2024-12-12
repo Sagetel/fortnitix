@@ -1,39 +1,34 @@
-import { AppThunk } from '../store';
-import { ActionTypes } from '../reducers/skinReducer';
-import axios from 'axios';
+import { Dispatch } from 'redux';
+import { fetchShop } from '../../utils/apiFortnite';
+import { IFetchShopFailureAction,
+  IFetchShopRequestAction,
+  IFetchShopSuccessAction,
+  ShopAction, ShopActionTypes,
+  ShopItem } from '../../utils/types';
 
-export const fetchSkins = (limit: number): AppThunk => async (dispatch) => {
-  dispatch({ type: ActionTypes.FETCH_SKINS });
-  try {
-    const response = await axios.get('https://fortnite-api.com/v2/cosmetics/br');
+export const fetchShopRequest = (): IFetchShopRequestAction => ({
+  type: ShopActionTypes.FETCH_SHOP_REQUEST,
+  payload: null,
+});
 
-    if (response.status === 200) {
-      const limitedData = response.data.data
-        .filter((item: any) => item.type.value === 'outfit')
-        .slice(0, limit)
-        .map((item: any) => {
-          return {
-            name: item.name,
-            image: item.images.icon,
-          };
-        });
+export const fetchShopSuccess = (shop: ShopItem[]): IFetchShopSuccessAction => ({
+  type: ShopActionTypes.FETCH_SHOP_SUCCESS,
+  payload: shop,
+});
 
-      console.log(limitedData);
+export const fetchShopFailure = (error: string): IFetchShopFailureAction => ({
+  type: ShopActionTypes.FETCH_SHOP_FAILURE,
+  payload: error,
+});
 
-      dispatch({
-        type: ActionTypes.FETCH_SKINS_SUCCESS,
-        payload: limitedData,
-      });
-    } else {
-      dispatch({
-        type: ActionTypes.FETCH_SKINS_ERROR,
-        payload: 'Failed to fetch skins',
-      });
+export const fetchShopAsync = () => {
+  return async (dispatch: Dispatch<ShopAction>) => {
+    dispatch(fetchShopRequest());
+    try {
+      const data = await fetchShop();
+      dispatch(fetchShopSuccess(data)); 
+    } catch (error) {
+      dispatch(fetchShopFailure('Ошибка'));
     }
-  } catch (error: any) {
-    dispatch({
-      type: ActionTypes.FETCH_SKINS_ERROR,
-      payload: error.message,
-    });
-  }
+  };
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardMedia, CardContent, Typography, IconButton, Box } from '@mui/material';
+import { Card, CardMedia, IconButton, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
@@ -77,11 +77,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, name }) => {
           <FavoriteIcon />
         </IconButton>
       </Box>
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
-        <Typography variant="body1" component="div" noWrap>
-          {name}
-        </Typography>
-      </CardContent>
     </Card>
   );
 };

@@ -75,3 +75,142 @@ interface IUserLogoutAction {
 }
 
 export type TUserAction = IUserAction | IUserLoginAction | IUserLoginErrorAction | IUserLogoutAction
+
+// skins types
+
+export interface Price {
+  floorPrice: number;
+  finalPrice: number;
+  regularPrice: number;
+}
+
+export interface Rarity {
+  id: string;
+  name: string;
+}
+
+export interface DisplayAsset {
+  displayAsset: string;
+  materialInstance: string;
+  url: string;
+  flipbook: string;
+  background_texture: string;
+  background: string;
+  full_background: string;
+}
+
+export interface GrantedItem {
+  id: string;
+  type: { name: string; id: string };
+  name: string;
+  description: string;
+  rarity: Rarity;
+  series: string;
+  price: number;
+  added: { version: string; date: string };
+  builtInEmote: string;
+  copyrightedAudio: boolean;
+  upcoming: boolean;
+  reactive: boolean;
+  releaseDate: string;
+  lastAppearance: string;
+  interest: number;
+  images: {
+    full_background: string;
+    icon_background: string;
+    background: string;
+    featured: string;
+    icon: string;
+  };
+  video: string;
+  audio: string;
+  gameplayTags: string[];
+  apiTags: string[];
+  searchTags: string[];
+  battlepass: string;
+  set: string;
+  introduction: string;
+  displayAssets: DisplayAsset[];
+  shopHistory: string[];
+  styles: {
+    name: string;
+    channel: string;
+    channelName: string;
+    tag: string;
+    isDefault: boolean;
+    startUnlocked: boolean;
+    hideIfNotOwned: boolean;
+    image: string;
+  }[];
+  grants: string[];
+  grantedBy: string[];
+}
+
+export interface ShopItem {
+  mainId: string;
+  displayName: string;
+  displayDescription: string;
+  displayType: string;
+  mainType: string;
+  offerId: string;
+  devName: string;
+  offerDates: { out: string; in: string };
+  colors: { textBackgroundColor: string; color3: string; color2: string; color1: string };
+  displayAssets: DisplayAsset[];
+  firstReleaseDate: string;
+  previousReleaseDate: string;
+  giftAllowed: boolean;
+  buyAllowed: boolean;
+  price: Price;
+  rarity: Rarity;
+  series: string;
+  banner: { intensity: string; name: string; id: string };
+  offerTag: string;
+  granted: GrantedItem[];
+}
+
+export interface SkinState {
+  shop: ShopItem[];
+  loading: boolean;
+  error: string | null;
+}
+
+export enum ShopActionTypes {
+    FETCH_SHOP_REQUEST = 'FETCH_SHOP_REQUEST',
+    FETCH_SHOP_SUCCESS = 'FETCH_SHOP_SUCCESS',
+    FETCH_SHOP_FAILURE = 'FETCH_SHOP_FAILURE',
+  }
+
+export interface IFetchShopRequestAction {
+    type: ShopActionTypes.FETCH_SHOP_REQUEST;
+    payload: null;
+}
+
+export interface IFetchShopSuccessAction {
+    type: ShopActionTypes.FETCH_SHOP_SUCCESS;
+    payload: ShopItem[];
+}
+
+export interface IFetchShopFailureAction {
+    type: ShopActionTypes.FETCH_SHOP_FAILURE;
+    payload: string;
+}
+
+export type ShopAction = 
+| IFetchShopRequestAction 
+| IFetchShopSuccessAction 
+| IFetchShopFailureAction;
+
+// api types
+
+export interface ApiResponse {
+    result: boolean;
+    fullShop: boolean;
+    lastUpdate: { uid: string; date: string };
+    currentRotation: string;
+    nextRotation: string;
+    carousel: string;
+    specialOfferVideo: string;
+    customBackground: string;
+    shop: ShopItem[];
+  }
