@@ -2,6 +2,7 @@ import { TUserAction, UserActionTypes, userState } from "../../utils/types"
 
 const initialState: userState = {
     userEmail: '',
+    userUId: '',
     userIsLogedIn: false,
     error: null,
 }
@@ -12,7 +13,8 @@ export const userReducer = (state = initialState, action: TUserAction): userStat
             return {
                 ...state,
                 userIsLogedIn: true,
-                userEmail: action.payload,
+                userEmail: action.payload.email,
+                userUId: action.payload.uid,
                 error: null
             }
         case UserActionTypes.LOGIN_ERROR: 
