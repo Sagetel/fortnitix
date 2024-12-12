@@ -1,9 +1,9 @@
-import { UserActionTypes } from '../../utils/types';
+import { UserActionTypes, LoginPayload } from '../../utils/types';
 
-export const login = (email: string) => {
+export const login = ({ email, uid }: LoginPayload) => {
     return {
     type: UserActionTypes.LOGIN,
-    payload: email,
+    payload: {email, uid},
 }};
 
 

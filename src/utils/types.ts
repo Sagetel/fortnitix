@@ -1,80 +1,84 @@
-
 export interface IFavoritesState {
-    favorites: any[];
-    error: null | string
+  favorites: any[];
+  error: null | string;
 }
 
-
 export enum FavoritesActionTypes {
-    CREATE_FAVORITE = 'CREATE_FAVORITE',
-    CREATE_FAVORITE_ERROR = 'CREATE_FAVORITE_ERROR',
-    GET_FAVORITE = 'GET_FAVORITE',
-    GET_FAVORITE_ERROR = 'GET_FAVORITE_ERROR',
+  CREATE_FAVORITE = "CREATE_FAVORITE",
+  CREATE_FAVORITE_ERROR = "CREATE_FAVORITE_ERROR",
+  GET_FAVORITE = "GET_FAVORITE",
+  GET_FAVORITE_ERROR = "GET_FAVORITE_ERROR",
 }
 
 export interface IFavoritesAction {
-    type: FavoritesActionTypes
-    payload: any
+  type: FavoritesActionTypes;
+  payload: any;
 }
 
 interface ICreateFavoriteAction {
-    type: FavoritesActionTypes.CREATE_FAVORITE,
-    payload: any[]
+  type: FavoritesActionTypes.CREATE_FAVORITE;
+  payload: any[];
 }
 
 interface ICreateFavoriteErrorAction {
-    type: FavoritesActionTypes.CREATE_FAVORITE_ERROR,
-    payload: any
+  type: FavoritesActionTypes.CREATE_FAVORITE_ERROR;
+  payload: any;
 }
 
 interface IGetFavoriteAction {
-    type: FavoritesActionTypes.GET_FAVORITE,
-    payload: any[]
+  type: FavoritesActionTypes.GET_FAVORITE;
+  payload: any[];
 }
 
 interface IGetFavoriteErrorAction {
-    type: FavoritesActionTypes.GET_FAVORITE_ERROR,
-    payload: any
+  type: FavoritesActionTypes.GET_FAVORITE_ERROR;
+  payload: any;
 }
 
-export type TFavoritesAction = ICreateFavoriteAction | ICreateFavoriteErrorAction | IGetFavoriteAction | IGetFavoriteErrorAction
-
+export type TFavoritesAction =
+  | ICreateFavoriteAction
+  | ICreateFavoriteErrorAction
+  | IGetFavoriteAction
+  | IGetFavoriteErrorAction;
 
 export interface userState {
-    userEmail: string;
-    userIsLogedIn: boolean;
-    error: null | string;
+  userEmail: string;
+  userIsLogedIn: boolean;
+  userUId: string;
+  error: null | string;
 }
 
-
-
 export enum UserActionTypes {
-    LOGIN = 'LOGIN',
-    LOGIN_ERROR = 'LOGIN_ERROR',
-    LOGOUT = 'LOGOUT',
+  LOGIN = "LOGIN",
+  LOGIN_ERROR = "LOGIN_ERROR",
+  LOGOUT = "LOGOUT",
 }
 
 export interface IUserAction {
-    type: UserActionTypes
-    payload: any
+  type: UserActionTypes;
+  payload: any;
 }
 
 interface IUserLoginAction {
-    type: UserActionTypes.LOGIN,
-    payload: string 
+  type: UserActionTypes.LOGIN;
+  payload: string;
 }
 
 interface IUserLoginErrorAction {
-    type: UserActionTypes.LOGIN_ERROR,
-    payload: string
+  type: UserActionTypes.LOGIN_ERROR;
+  payload: string;
 }
 
 interface IUserLogoutAction {
-    type: UserActionTypes.LOGOUT,
-    payload: null | string
+  type: UserActionTypes.LOGOUT;
+  payload: null | string;
 }
 
-export type TUserAction = IUserAction | IUserLoginAction | IUserLoginErrorAction | IUserLogoutAction
+export type TUserAction =
+  | IUserAction
+  | IUserLoginAction
+  | IUserLoginErrorAction
+  | IUserLogoutAction;
 
 // skins types
 
@@ -155,7 +159,12 @@ export interface ShopItem {
   offerId: string;
   devName: string;
   offerDates: { out: string; in: string };
-  colors: { textBackgroundColor: string; color3: string; color2: string; color1: string };
+  colors: {
+    textBackgroundColor: string;
+    color3: string;
+    color2: string;
+    color1: string;
+  };
   displayAssets: DisplayAsset[];
   firstReleaseDate: string;
   previousReleaseDate: string;
@@ -176,41 +185,46 @@ export interface SkinState {
 }
 
 export enum ShopActionTypes {
-    FETCH_SHOP_REQUEST = 'FETCH_SHOP_REQUEST',
-    FETCH_SHOP_SUCCESS = 'FETCH_SHOP_SUCCESS',
-    FETCH_SHOP_FAILURE = 'FETCH_SHOP_FAILURE',
-  }
+  FETCH_SHOP_REQUEST = "FETCH_SHOP_REQUEST",
+  FETCH_SHOP_SUCCESS = "FETCH_SHOP_SUCCESS",
+  FETCH_SHOP_FAILURE = "FETCH_SHOP_FAILURE",
+}
 
 export interface IFetchShopRequestAction {
-    type: ShopActionTypes.FETCH_SHOP_REQUEST;
-    payload: null;
+  type: ShopActionTypes.FETCH_SHOP_REQUEST;
+  payload: null;
 }
 
 export interface IFetchShopSuccessAction {
-    type: ShopActionTypes.FETCH_SHOP_SUCCESS;
-    payload: ShopItem[];
+  type: ShopActionTypes.FETCH_SHOP_SUCCESS;
+  payload: ShopItem[];
 }
 
 export interface IFetchShopFailureAction {
-    type: ShopActionTypes.FETCH_SHOP_FAILURE;
-    payload: string;
+  type: ShopActionTypes.FETCH_SHOP_FAILURE;
+  payload: string;
 }
 
-export type ShopAction = 
-| IFetchShopRequestAction 
-| IFetchShopSuccessAction 
-| IFetchShopFailureAction;
+export type ShopAction =
+  | IFetchShopRequestAction
+  | IFetchShopSuccessAction
+  | IFetchShopFailureAction;
 
 // api types
 
 export interface ApiResponse {
-    result: boolean;
-    fullShop: boolean;
-    lastUpdate: { uid: string; date: string };
-    currentRotation: string;
-    nextRotation: string;
-    carousel: string;
-    specialOfferVideo: string;
-    customBackground: string;
-    shop: ShopItem[];
-  }
+  result: boolean;
+  fullShop: boolean;
+  lastUpdate: { uid: string; date: string };
+  currentRotation: string;
+  nextRotation: string;
+  carousel: string;
+  specialOfferVideo: string;
+  customBackground: string;
+  shop: ShopItem[];
+}
+
+export interface LoginPayload {
+  email: string;
+  uid: string;
+}
