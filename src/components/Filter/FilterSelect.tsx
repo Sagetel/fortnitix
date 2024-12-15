@@ -20,6 +20,23 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ options, label, onSelect })
     onSelect(selectedValue);
   };
 
+  const typesMap: Record<string, string> = {
+    backpack: 'Рюкзаки',
+    bundle: 'Наборы',
+    emote: 'Эмоции',
+    glider: 'Планеры',
+    outfit: 'Скины',
+    pickaxe: 'Кирки',
+    shoes: 'Обувь',
+    sparks_bass: 'Басс гитары',
+    sparks_guitar: 'Обычные гитары',
+    sparks_keyboard: 'Клавишные гитары',
+    sparks_song: 'Треки',
+    sparks_microphone: 'Треки',
+    vehicle_booster: 'Эффекты ускорения',
+    wrap: 'Обложки',
+  }
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -36,7 +53,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ options, label, onSelect })
           </MenuItem>
           {options.map((optionValue, index) => (
             <MenuItem key={index} value={optionValue}>
-              {optionValue}
+              {typesMap[optionValue] || optionValue}
             </MenuItem>
           ))}
         </Select>
