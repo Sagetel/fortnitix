@@ -43,7 +43,6 @@ const Filters: React.FC<FiltersProps> = ({ shop }) => {
 
   const handleSelectChange = (key: string, value: string) => {
     dispatch(setFilter(key, value));
-    console.log(`Выбранный ${key}:`, value);
   };
 
   return (
