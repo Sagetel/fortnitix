@@ -228,3 +228,29 @@ export interface LoginPayload {
   email: string;
   uid: string;
 }
+
+// filter types
+
+export interface FilterConfig {
+  label: string;
+  key: string;
+  uniqueValues: string[];
+}
+
+export enum FilterActionTypes {
+  SET_FILTER = "SET_FILTER",
+  RESET_FILTERS = "RESET_FILTERS",
+}
+
+export interface ISetFiltersAction {
+  type: FilterActionTypes.SET_FILTER;
+  payload: ShopItem[];
+}
+
+export interface IResetFiltersAction {
+  type: FilterActionTypes.RESET_FILTERS;
+}
+
+export interface FilterState {
+  selectedValues: Record<string, string>;
+}
