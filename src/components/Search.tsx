@@ -4,21 +4,26 @@ import SearchIcon from '@mui/icons-material/Search';
 
 interface SearchProps {
   onSearch: (query: string) => void;
+  query: string;
 }
 
-const Search: React.FC<SearchProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
+const Search: React.FC<SearchProps> = ({ onSearch, query }) => {
+  const [localQuery, setLocalQuery] = useState(query);
+
+  useEffect(() => {
+    setLocalQuery(query);
+  }, [query]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      onSearch(query);
+      onSearch(localQuery);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [query, onSearch]);
+  }, [localQuery, onSearch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setLocalQuery(event.target.value);
   };
 
   return (
@@ -27,7 +32,7 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
         label="Search"
         variant="outlined"
         fullWidth
-        value={query}
+        value={localQuery}
         onChange={handleChange}
         sx={{ mb: 2 }}
         slotProps={{

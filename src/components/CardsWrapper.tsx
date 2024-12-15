@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchShopAsync } from "../store/action-creators/skins";
-import { RootState } from "../store/store";
 import ProductCard from "./ProductCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { AppDispatch } from "../store/store";
+import { SkinState } from "../utils/types";
 
-interface CardsWrapperProps {
+interface CardsWrapperProps extends SkinState {
   query: string;
 }
 
-const CardsWrapper: React.FC<CardsWrapperProps> = ({ query }) => {
+const CardsWrapper: React.FC<CardsWrapperProps> = ({ query, shop, loading, error }) => {
   const [visibleGoods, setVisibleGoods] = useState<number>(24);
-
-  const dispatch = useDispatch<AppDispatch>();
-  const { shop, loading, error } = useSelector(
-    (state: RootState) => state.skins
-  );
-
-  useEffect(() => {
-    dispatch(fetchShopAsync());
-  }, [dispatch]);
 
   const loadMoreRef = useInfiniteScroll(() => {
     setVisibleGoods((prev) => Math.min(prev + 6, shop.length));
