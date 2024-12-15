@@ -17,10 +17,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, name, mainId }) => {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useAppDispatch();
 
-  const { userIsLogedIn, userUId } = useSelector((state: RootState) => ({
-    userIsLogedIn: state.user.userIsLogedIn,
-    userUId: state.user.userUId,
-  }));
+  const userIsLogedIn = useSelector(
+    (state: RootState) => state.user.userIsLogedIn
+  );
+  const userUId = useSelector((state: RootState) => state.user.userUId);
 
   const handleClick = () => {
     setIsFavorite((prev) => !prev);
