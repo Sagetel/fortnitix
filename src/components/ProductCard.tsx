@@ -5,14 +5,16 @@ import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import { createFavorites } from "../store/action-creators/favorites";
 import { useAppDispatch } from "../store/hooks";
+import { ShopItem } from "../utils/types";
 
 interface ProductCardProps {
   image: string;
   name: string;
   mainId: string;
+  product: ShopItem
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ image, name, mainId }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ image, name, mainId, product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useAppDispatch();
@@ -24,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ image, name, mainId }) => {
 
   const handleClick = () => {
     setIsFavorite((prev) => !prev);
-    dispatch(createFavorites({ mainId, userUId }));
+    dispatch(createFavorites({ mainId, userUId, product }));
   };
 
   return (

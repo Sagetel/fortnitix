@@ -35,6 +35,7 @@ const CardsWrapper: React.FC<CardsWrapperProps> = ({ query, shop, loading, error
                   name={el.displayName}
                   image={el.displayAssets[0].full_background}
                   mainId={el.mainId}
+                  product={el}
                 />
               </Grid>
             )
