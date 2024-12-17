@@ -1,5 +1,4 @@
-import { AnyAction } from 'redux';
-import { SkinState } from '../../utils/types';
+import { SkinState, ShopAction } from '../../utils/types';
 
 const initialState: SkinState = {
   shop: [],
@@ -7,7 +6,7 @@ const initialState: SkinState = {
   error: null,
 };
 
-export const skinsReducer = (state = initialState, action: AnyAction): SkinState => {
+export const skinsReducer = (state = initialState, action: ShopAction): SkinState => {
   switch (action.type) {
     case 'FETCH_SHOP_REQUEST':
       return { ...state, loading: true, error: null };
