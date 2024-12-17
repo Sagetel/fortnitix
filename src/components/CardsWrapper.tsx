@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ProductCard from "./ProductCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { SkinState } from "../utils/types";
+import { ShopItem, SkinState } from "../utils/types";
 
 interface CardsWrapperProps extends SkinState {
   query: string;
@@ -11,16 +11,20 @@ interface CardsWrapperProps extends SkinState {
 
 const CardsWrapper: React.FC<CardsWrapperProps> = ({ query, shop, loading, error }) => {
   const [visibleGoods, setVisibleGoods] = useState<number>(24);
+  const [filteredData, setFilteredData] = useState<ShopItem[]>([]);
 
   const loadMoreRef = useInfiniteScroll(() => {
     setVisibleGoods((prev) => Math.min(prev + 6, shop.length));
   }, loading);
 
-  const filteredData = shop
-    .slice(0, visibleGoods)
-    .filter((item) =>
-      item.displayName.toLowerCase().includes(query.toLowerCase())
-    );
+  useEffect(() => {
+    const filtered = shop
+      .slice(0, visibleGoods)
+      .filter((item) =>
+        item.displayName.toLowerCase().includes(query.toLowerCase())
+      );
+    setFilteredData(filtered);
+  }, [shop, visibleGoods, query]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

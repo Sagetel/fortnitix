@@ -5,6 +5,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import History from "./pages/History";
+import Skin from "./pages/Skin";
 import "normalize.css";
 import './App.css'
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/singup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/history" element={<History />} />
+          <Route path="/skin/:skinId" element={<Skin />} />
         </Routes>
       </Layout>
     </BrowserRouter>
