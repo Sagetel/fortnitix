@@ -3,12 +3,12 @@ import CardsWrapper from "../components/CardsWrapper";
 import Search from "../components/Search";
 import Filters from "../components/Filter/Filters";
 import { Box, Button } from "@mui/material";
-import { AppDispatch, RootState } from "../store/store";
-import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
 import { getFavorites } from "../store/action-creators/favorites";
-import { fetchShopAsync } from "../store/action-creators/skins";
 import { resetFilters } from "../store/action-creators/filter";
-import { FiltersType } from "../utils/types";
+import { FiltersType, ShopItem } from "../utils/types";
+import { useAppDispatch } from "../store/hooks";
 
 interface SearchHistoryEntry {
   query: string;
@@ -17,15 +17,12 @@ interface SearchHistoryEntry {
 
 const Home: React.FC = () => {
   const [query, setQuery] = useState("");
+  const [filteredShop, setFilteredShop] = useState<ShopItem[]>([]);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { userUId } = useSelector((state: RootState) => state.user);
   const { shop, loading, error } = useSelector((state: RootState) => state.skins);
   const selectedFilters = useSelector((state: RootState) => state.filter.selectedValues);
-
-  useEffect(() => {
-    dispatch(fetchShopAsync());
-  }, [dispatch]);
 
   const dispatchFavorites = useCallback(() => {
     if (userUId) {
@@ -63,13 +60,16 @@ const Home: React.FC = () => {
     }
   };
 
-  const filteredShop = shop.filter(item => {
-    const matchesMainType = selectedFilters.mainType ? item.mainType.toLowerCase() === selectedFilters.mainType.toLowerCase() : true;
-    const matchesRarity = selectedFilters.rarity ? item.rarity.name.toLowerCase() === selectedFilters.rarity.toLowerCase() : true;
-    const matchesBuyAllowed = selectedFilters.buyAllowed ? (item.buyAllowed ? 'да' : 'нет') === selectedFilters.buyAllowed : true;
-
-    return matchesMainType && matchesRarity && matchesBuyAllowed;
-  });
+  useEffect(() => {
+    const filteredShop = shop.filter(item => {
+      const matchesMainType = selectedFilters.mainType ? item.mainType.toLowerCase() === selectedFilters.mainType.toLowerCase() : true;
+      const matchesRarity = selectedFilters.rarity ? item.rarity.name.toLowerCase() === selectedFilters.rarity.toLowerCase() : true;
+      const matchesBuyAllowed = selectedFilters.buyAllowed ? (item.buyAllowed ? 'да' : 'нет') === selectedFilters.buyAllowed : true;
+  
+      return matchesMainType && matchesRarity && matchesBuyAllowed;
+    });
+    setFilteredShop(filteredShop);
+  }, [selectedFilters.buyAllowed, selectedFilters.mainType, selectedFilters.rarity, shop]);
 
   const handleReset = () => {
     setQuery("");

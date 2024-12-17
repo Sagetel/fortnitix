@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import FilterSelect from './FilterSelect';
 import { Grid } from '@mui/material';
 import { setFilter } from '../../store/action-creators/filter';
 import { ShopItem, FilterConfig } from '../../utils/types';
 import { RootState } from '../../store/store';
+import { useAppDispatch } from '../../store/hooks';
 
 interface FiltersProps {
   shop: ShopItem[];
 }
 
 const Filters: React.FC<FiltersProps> = ({ shop }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const selectedFilters = useSelector((state: RootState) => state.filter.selectedValues);
   const [filters, setFilters] = React.useState<FilterConfig[]>([]);
 
