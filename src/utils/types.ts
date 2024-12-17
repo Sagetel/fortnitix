@@ -1,5 +1,5 @@
 export interface IFavoritesState {
-  favorites: any[];
+  favorites: ShopItem[];
   error: null | string;
 }
 
@@ -17,7 +17,7 @@ export interface IFavoritesAction {
 
 interface ICreateFavoriteAction {
   type: FavoritesActionTypes.CREATE_FAVORITE;
-  payload: any[];
+  payload: ShopItem;
 }
 
 interface ICreateFavoriteErrorAction {
@@ -27,7 +27,7 @@ interface ICreateFavoriteErrorAction {
 
 interface IGetFavoriteAction {
   type: FavoritesActionTypes.GET_FAVORITE;
-  payload: any[];
+  payload: ShopItem[];
 }
 
 interface IGetFavoriteErrorAction {
