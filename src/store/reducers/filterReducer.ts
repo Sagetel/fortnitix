@@ -1,10 +1,14 @@
-import { FilterActionTypes, FilterState } from '../../utils/types';
+import { FilterAction, FilterActionTypes } from '../../utils/types';
+
+type FilterState = {
+  selectedValues: Record<string, string>;
+}
 
 const initialState: FilterState = {
   selectedValues: {},
 };
 
-export const filterReducer = (state = initialState, action: any) => {
+export const filterReducer = (state = initialState, action: FilterAction) => {
   switch (action.type) {
     case FilterActionTypes.SET_FILTER:
       return {
@@ -15,7 +19,7 @@ export const filterReducer = (state = initialState, action: any) => {
         },
       };
     case FilterActionTypes.RESET_FILTERS:
-      return initialState; 
+      return initialState
     default:
       return state;
   }

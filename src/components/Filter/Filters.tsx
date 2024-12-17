@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import FilterSelect from './FilterSelect';
 import { Grid } from '@mui/material';
 import { setFilter } from '../../store/action-creators/filter';
-import { ShopItem, FilterConfig } from '../../utils/types'
+import { ShopItem, FilterConfig } from '../../utils/types';
+import { RootState } from '../../store/store';
 
 interface FiltersProps {
   shop: ShopItem[];
@@ -11,7 +12,8 @@ interface FiltersProps {
 
 const Filters: React.FC<FiltersProps> = ({ shop }) => {
   const dispatch = useDispatch();
-  const [filters, setFilters] = useState<FilterConfig[]>([]);
+  const selectedFilters = useSelector((state: RootState) => state.filter.selectedValues);
+  const [filters, setFilters] = React.useState<FilterConfig[]>([]);
 
   useEffect(() => {
     const newFilters: FilterConfig[] = [
@@ -39,7 +41,7 @@ const Filters: React.FC<FiltersProps> = ({ shop }) => {
     newFilters[2].uniqueValues = Array.from(buyAllowedOptions);
 
     setFilters(newFilters);
-  }, [shop]);
+  }, [shop, selectedFilters]);
 
   const handleSelectChange = (key: string, value: string) => {
     dispatch(setFilter(key, value));
@@ -53,6 +55,7 @@ const Filters: React.FC<FiltersProps> = ({ shop }) => {
             options={filter.uniqueValues}
             label={filter.label}
             onSelect={(value) => handleSelectChange(filter.key, value)}
+            value={selectedFilters[filter.key] || ''} 
           />
         </Grid>
       ))}
