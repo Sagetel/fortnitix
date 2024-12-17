@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Filters from "../components/Filter/Filters";
-import { AppDispatch, RootState } from "../store/store";
-import { getFavorites } from "../store/action-creators/favorites";
-import { fetchShopAsync } from "../store/action-creators/skins";
-import { resetFilters } from "../store/action-creators/filter";
-import { useSelector, useDispatch } from "react-redux";
-import Search from "../components/Search";
-import { Box, Typography, Button, Avatar } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { resetFilters } from "../store/action-creators/filter";
+import { RootState } from "../store/store";
 import CardsWrapper from "../components/CardsWrapper";
-import { ControlCameraSharp } from "@mui/icons-material";
+import Filters from "../components/Filter/Filters";
+import Search from "../components/Search";
 function Favorites() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
