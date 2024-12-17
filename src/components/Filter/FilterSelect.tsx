@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -9,14 +9,13 @@ type FilterSelectProps = {
   options: string[];
   label: string;
   onSelect: (value: string) => void;
+  value: string;
 };
 
-const FilterSelect: React.FC<FilterSelectProps> = ({ options, label, onSelect }) => {
-  const [option, setOption] = useState('');
+const FilterSelect: React.FC<FilterSelectProps> = ({ options, label, onSelect, value }) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     const selectedValue = event.target.value as string;
-    setOption(selectedValue);
     onSelect(selectedValue);
   };
 
@@ -35,7 +34,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ options, label, onSelect })
     sparks_microphone: 'Треки',
     vehicle_booster: 'Эффекты ускорения',
     wrap: 'Обложки',
-  }
+  };
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -44,7 +43,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ options, label, onSelect })
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={option}
+          value={value}
           label={label}
           onChange={handleChange}
         >

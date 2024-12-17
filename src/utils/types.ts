@@ -244,13 +244,38 @@ export enum FilterActionTypes {
 
 export interface ISetFiltersAction {
   type: FilterActionTypes.SET_FILTER;
-  payload: ShopItem[];
+  payload: {
+    key: string;
+    value: string;
+  };
 }
 
 export interface IResetFiltersAction {
   type: FilterActionTypes.RESET_FILTERS;
 }
 
-export interface FilterState {
-  selectedValues: Record<string, string>;
+export type FilterAction = ISetFiltersAction | IResetFiltersAction;
+
+export interface FiltersType {
+  rarity?: string
+  mainType?: string
+  buyAllowed?: string
 }
+
+// history
+
+export enum HistoryActionTypes {
+  ADD_SEARCH_HISTORY = "ADD_SEARCH_HISTORY",
+  LOAD_SEARCH_HISTORY = "LOAD_SEARCH_HISTORY",
+}
+
+export interface IAddSearchHistoryAction {
+  type: HistoryActionTypes.ADD_SEARCH_HISTORY;
+  payload: { query: string; filters: FiltersType };
+}
+
+export interface ILoadSearchHistoryAction {
+  type: HistoryActionTypes.LOAD_SEARCH_HISTORY;
+}
+
+export type HistoryAction = IAddSearchHistoryAction | ILoadSearchHistoryAction;
