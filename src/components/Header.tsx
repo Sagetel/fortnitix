@@ -37,7 +37,15 @@ export default function Header() {
               </Link>
             </>
           ) : (
-            <UserProfile />
+            <>
+              <Link
+                to="/favorites"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Button color="inherit">Избранное</Button>
+              </Link>
+              <UserProfile />
+            </>
           )}
         </Toolbar>
       </AppBar>
