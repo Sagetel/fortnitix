@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ProductCard from "./ProductCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import { RootState } from "../store/store";
 import { ShopItem, SkinState } from "../utils/types";
 
 interface CardsWrapperProps extends SkinState {
   query: string;
 }
 
-const CardsWrapper: React.FC<CardsWrapperProps> = ({ query, shop, loading, error }) => {
+const CardsWrapper: React.FC<CardsWrapperProps> = ({
+  query,
+  shop,
+  loading,
+  error,
+}) => {
   const [visibleGoods, setVisibleGoods] = useState<number>(24);
   const [filteredData, setFilteredData] = useState<ShopItem[]>([]);
+  const [favIdsArray, setFavIdsArray] = useState<string[]>([]);
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.favorites
+  );
+
+  useEffect(() => {
+    if (favorites) {
+      setFavIdsArray(favorites.map((item) => item.mainId));
+    }
+  }, [favorites]);
 
   const loadMoreRef = useInfiniteScroll(() => {
     setVisibleGoods((prev) => Math.min(prev + 6, shop.length));
@@ -40,6 +57,7 @@ const CardsWrapper: React.FC<CardsWrapperProps> = ({ query, shop, loading, error
                   image={el.displayAssets[0].full_background}
                   mainId={el.mainId}
                   product={el}
+                  favIdsArray={favIdsArray}
                 />
               </Grid>
             )

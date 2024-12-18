@@ -8,6 +8,8 @@ export enum FavoritesActionTypes {
   CREATE_FAVORITE_ERROR = "CREATE_FAVORITE_ERROR",
   GET_FAVORITE = "GET_FAVORITE",
   GET_FAVORITE_ERROR = "GET_FAVORITE_ERROR",
+  DELETE_FAVORITE = "DELETE_FAVORITE",
+  DELETE_FAVORITE_ERROR = "DELETE_FAVORITE_ERROR",
 }
 
 export interface IFavoritesAction {
@@ -34,12 +36,22 @@ interface IGetFavoriteErrorAction {
   type: FavoritesActionTypes.GET_FAVORITE_ERROR;
   payload: any;
 }
+interface IDeleteFavoriteAction {
+  type: FavoritesActionTypes.DELETE_FAVORITE;
+  payload: any;
+}
+interface IDeleteFavoriteErrorAction {
+  type: FavoritesActionTypes.DELETE_FAVORITE_ERROR;
+  payload: any;
+}
 
 export type TFavoritesAction =
   | ICreateFavoriteAction
   | ICreateFavoriteErrorAction
   | IGetFavoriteAction
-  | IGetFavoriteErrorAction;
+  | IGetFavoriteErrorAction
+  | IDeleteFavoriteAction
+  | IDeleteFavoriteErrorAction
 
 export interface userState {
   userEmail: string;
@@ -257,9 +269,9 @@ export interface IResetFiltersAction {
 export type FilterAction = ISetFiltersAction | IResetFiltersAction;
 
 export interface FiltersType {
-  rarity?: string
-  mainType?: string
-  buyAllowed?: string
+  rarity?: string;
+  mainType?: string;
+  buyAllowed?: string;
 }
 
 // history

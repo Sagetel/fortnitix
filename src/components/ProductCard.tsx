@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardMedia, IconButton, Box, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
-import { createFavorites } from "../store/action-creators/favorites";
+import {
+  createFavorites,
+  deleteFavorite,
+} from "../store/action-creators/favorites";
 import { useAppDispatch } from "../store/hooks";
 import { Link } from "react-router-dom";
 import { ShopItem } from "../utils/types";
@@ -12,12 +15,20 @@ interface ProductCardProps {
   image: string;
   name: string;
   mainId: string;
-  product: ShopItem
+  product: ShopItem;
+  favIdsArray: string[];
 }
 
-const defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmqpUgd4H8-OE03-qv8As6T6b0bx4It3YWYA&s'
+const defaultImage =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmqpUgd4H8-OE03-qv8As6T6b0bx4It3YWYA&s";
 
-const ProductCard: React.FC<ProductCardProps> = ({ image = defaultImage, name, mainId, product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  image = defaultImage,
+  name,
+  mainId,
+  product,
+  favIdsArray,
+}) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useAppDispatch();
@@ -29,8 +40,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ image = defaultImage, name, m
 
   const handleClick = () => {
     setIsFavorite((prev) => !prev);
-    dispatch(createFavorites({ mainId, userUId, product }));
+    if (isFavorite) {
+      dispatch(deleteFavorite({ mainId, userUId }));
+    } else {
+      dispatch(createFavorites({ mainId, userUId, product }));
+    }
   };
+
+  useEffect(() => {
+    if (favIdsArray.includes(mainId)) {
+      setIsFavorite(true);
+    }
+  }, [favIdsArray, mainId]);
 
   return (
     <Card
