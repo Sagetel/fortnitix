@@ -42,6 +42,39 @@ export const createFavorites = ({ mainId, userUId, product }: CreateFavoritesPro
   };
 };
 
+export const deleteFavorite = ({ mainId, userUId }: { mainId: string; userUId: string }) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const user = await supabase.auth.getUser();
+      if (user.data.user?.id) {
+        const { error } = await supabase
+          .from("favorites")
+          .delete()
+          .match({
+            userId: userUId,
+            outfitId: mainId,
+          });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        dispatch({
+          type: FavoritesActionTypes.DELETE_FAVORITE,
+          payload: mainId,
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка удаления из избранного:", error);
+      dispatch({
+        type: FavoritesActionTypes.DELETE_FAVORITE_ERROR,
+        payload: (error as Error).message,
+      });
+    }
+  };
+};
+
+
 export const getFavorites = () => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch({ type: FavoritesActionTypes.GET_FAVORITE });

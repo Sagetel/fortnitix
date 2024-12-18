@@ -19,7 +19,7 @@ function Favorites() {
     if (!user.userUId) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, navigate]);
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
